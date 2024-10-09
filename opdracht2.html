@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opdracht 2</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>PokeAPI</h1>
+<label for="pokemonName">Enter Pokémon Name or ID:</label>
+<input type="text" id="pokemonName">
+<button id="searchButton">Search</button>
+
+<div id="pokemonInfo">
+  <h2>Pokémon Info:</h2>
+  <div id="pokemonNameResult"></div>
+  <div id="pokemonImageResult"></div>
+  <div id="pokemonTypesResult"></div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#searchButton').click(function() {
+      let pokemonName = $('#pokemonName').val().toLowerCase();
+      let apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
+
+      $.ajax({
+        url: apiUrl,
+        type: 'GET',
+        success: function(data) {
+          $('#pokemonNameResult').text(`Name: ${data.name}`);
+          $('#pokemonImageResult').html(`<img src="${data.sprites.front_default}" alt="Pokemon Image">`);
+
+          let types = data.types.map(type => type.type.name);
+          $('#pokemonTypesResult').html(`Types: ${types.join(', ')}`);
+        },
+        error: function() {
+          $('#pokemonInfo').html('<p>Pokémon not found!</p>');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

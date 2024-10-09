@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>JQuery AJAX VB</title>
+    <!-- Laadt de JQuery-library van internet -->
+    <!-- LET OP: Altijd EERST Jquery laden voordat je deze gebruikt! -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let key = "2097d2f4fd6c802c7a8c29af9af6b524";
+            $.ajax({
+                type: "GET",
+                url: 'https://api.openweathermap.org/data/2.5/weather?q=Amsterdam&appid='+key,
+                dataType: 'json',
+                success: function (gegevens) {
+                    console.log(gegevens);
+                    let temperatuurCelsius = (gegevens.main.temp - 273.15).toFixed(1); // Omzetten naar Celsius en afronden op 1 decimaal
+                    let weericoonUrl = "http://openweathermap.org/img/wn/" + gegevens.weather[0].icon + ".png";
+                    let windsnelheid = gegevens.wind.speed;
+                    let luchtvochtigheid = gegevens.main.humidity;
+
+                    $("#resultaat").html("<p>Weer: " + gegevens.weather[0].description + "</p>" +
+                        "<p>Temperatuur: " + temperatuurCelsius + "°C</p>" +
+                        "<img src='" + weericoonUrl + "' alt='Weer icoon'>" +
+                        "<p>Windsnelheid: " + windsnelheid + " m/s</p>" +
+                        "<p>Luchtvochtigheid: " + luchtvochtigheid + "%</p>");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<H1>JQuery & AJAX: Voorbeeld</H1>
+<div id="resultaat"></div>
+</body>
+</html>
